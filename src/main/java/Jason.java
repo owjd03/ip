@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Jason {
@@ -6,6 +7,7 @@ public class Jason {
 		String name = "Jason";
 		String input = "";
 		Boolean exit = false;
+		ArrayList<String> storage = new ArrayList<>();
 
 		System.out.println("________________________________________");
 		System.out.println("Hello! I'm " + name);
@@ -17,10 +19,17 @@ public class Jason {
 
 			if (input.equals("bye")) {
 				exit = true;
+			} else if(input.equals("list")) {
+				System.out.println("________________________________________");
+				for (int i = 0;i<storage.size();i++) {
+					System.out.println("	" + (i + 1) + ". " + storage.get(i));
+				}
+				System.out.println("________________________________________");
 			} else {
 				System.out.println("________________________________________");
-				System.out.println("     " + input);
+				System.out.println("	added: " + input);
 				System.out.println("________________________________________");
+				storage.add(input);
 			}
 		}
 
