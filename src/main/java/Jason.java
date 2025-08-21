@@ -40,6 +40,9 @@ public class Jason {
 				} else if (input.startsWith("event")) {
 					eventAction(input);
 
+				} else if (input.startsWith("delete")) {
+					deleteAction(input);
+
 				} else {
 					// invalid structure
 					throw new JasonException("I am extremely sorry but give me a todo, deadline or event ૮(˶ㅠ︿ㅠ)ა");
@@ -47,6 +50,10 @@ public class Jason {
 			} catch (JasonException e) {
 				System.out.println("________________________________________");
 				System.out.println("	" + e.getMessage());
+				System.out.println("________________________________________");
+			} catch (Exception e) {
+				System.out.println("________________________________________");
+				System.out.println("Something went wrong: " + e.getMessage());
 				System.out.println("________________________________________");
 			}
 		}
@@ -187,5 +194,29 @@ public class Jason {
 		System.out.println("   " +  temp.toString());
 		System.out.println("Now you have " + storage.size() + " tasks in the list.");
 		System.out.println("________________________________________");
+	}
+
+	public static void deleteAction(String input) throws JasonException{
+		String stringDelete = input.substring(6);
+
+		//user needs to state number
+		if (stringDelete.trim().isEmpty()) {
+			throw new JasonException("Please specify task number");
+		}
+
+		int delete = Integer.parseInt(stringDelete.trim()) - 1;
+
+		if (delete >= storage.size() || delete < 0) {
+			throw new JasonException("Give me a valid task number");
+		}
+
+		System.out.println("________________________________________");
+		System.out.println("Noted. I've removed this task:");
+		System.out.println("    " + storage.get(delete).toString());
+		System.out.println("Now you have " + (storage.size() - 1) + " tasks in the list.");
+		System.out.println("________________________________________");
+
+		storage.remove(delete);
+
 	}
 }
