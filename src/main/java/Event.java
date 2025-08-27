@@ -1,11 +1,24 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class Event extends Task {
     protected String from;
     protected String to;
 
     public Event(String contents, String from, String to) {
         super(contents);
-        this.from = from;
-        this.to = to;
+        this.from = parseDate(from);
+        this.to = parseDate(to);
+    }
+
+    private String parseDate(String date) {
+        try {
+            LocalDate parsedDate = LocalDate.parse(date.trim());
+            return parsedDate.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
+
+        } catch (Exception e) {
+            return date;
+        }
     }
 
     public String getTo() {
