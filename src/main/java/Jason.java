@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class Jason {
 	private static ArrayList<Task> storage = new ArrayList<>();
+	private static Storage fileStorage = new Storage("./data/Jason.txt");
 
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
@@ -14,6 +15,13 @@ public class Jason {
 		System.out.println("Hello! I'm " + name);
 		System.out.println("What can I do for you?");
 		System.out.println("________________________________________");
+
+		try {
+			storage = fileStorage.load();
+		} catch (Exception e) {
+			System.out.println("Something went wrong: " + e.getMessage());
+		}
+
 
 		while (!exit) {
 			input = scanner.nextLine();
@@ -65,6 +73,14 @@ public class Jason {
 		scanner.close();
 	}
 
+	private static void saveToStorage() {
+		try {
+			fileStorage.save(storage);
+		} catch (Exception e) {
+			System.out.println("Something went wrong: " + e.getMessage());
+		}
+	}
+
 	public static void list(String input) {
 		System.out.println("________________________________________");
 		System.out.println("	Here are the tasks in your list:");
@@ -108,6 +124,8 @@ public class Jason {
 			System.out.println(message);
 			System.out.println("		" + storage.get(number).toString());
 			System.out.println("________________________________________");
+
+			saveToStorage();
 		} catch (JasonException e) {
 			System.out.println("________________________________________");
 			System.out.println("	Bro! " + e.getMessage());
@@ -130,6 +148,8 @@ public class Jason {
 		System.out.println("   " + temp.toString());
 		System.out.println("Now you have " + storage.size() + " tasks in the list.");
 		System.out.println("________________________________________");
+
+		saveToStorage();
 
 
 	}
@@ -162,6 +182,8 @@ public class Jason {
 		System.out.println("   " + temp.toString());
 		System.out.println("Now you have " + storage.size() + " tasks in the list.");
 		System.out.println("________________________________________");
+
+		saveToStorage();
 	}
 
 	public static void eventAction(String input) throws JasonException{
@@ -194,6 +216,8 @@ public class Jason {
 		System.out.println("   " +  temp.toString());
 		System.out.println("Now you have " + storage.size() + " tasks in the list.");
 		System.out.println("________________________________________");
+
+		saveToStorage();
 	}
 
 	public static void deleteAction(String input) throws JasonException{
@@ -217,6 +241,8 @@ public class Jason {
 		System.out.println("________________________________________");
 
 		storage.remove(delete);
+
+		saveToStorage();
 
 	}
 }
