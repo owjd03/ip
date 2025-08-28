@@ -2,29 +2,33 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Jason {
-	private static ArrayList<Task> storage = new ArrayList<>();
-	private static Storage fileStorage = new Storage("./data/Jason.txt");
+	private TaskList taskList;
+	private Storage storage;
+	private Ui ui;
 
-	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		String name = "Jason";
-		String input = "";
-		Boolean exit = false;
-
-		System.out.println("________________________________________");
-		System.out.println("Hello! I'm " + name);
-		System.out.println("What can I do for you?");
-		System.out.println("________________________________________");
-
+	private Jason(String filePath) {
+		this.ui = new Ui("Jason");
+		this.storage = new Storage(filePath);
 		try {
-			storage = fileStorage.load();
+			this.taskList = new TaskList(storage.load());
 		} catch (Exception e) {
 			System.out.println("Something went wrong: " + e.getMessage());
+			this.taskList = new TaskList();
 		}
+	}
 
+	public static void main(String[] args) {
+		new Jason("./data/Jason.txt").run();
+	}
+
+	public void run () {
+		String input = "";
+		boolean exit = false;
+
+		ui.showStart();
 
 		while (!exit) {
-			input = scanner.nextLine();
+			input = ui.read();
 
 			try {
 				if (input.equals("bye")) {
@@ -56,41 +60,29 @@ public class Jason {
 					throw new JasonException("I am extremely sorry but give me a todo, deadline or event ૮(˶ㅠ︿ㅠ)ა");
 				}
 			} catch (JasonException e) {
-				System.out.println("________________________________________");
-				System.out.println("	" + e.getMessage());
-				System.out.println("________________________________________");
+				ui.showError(e.getMessage());
 			} catch (Exception e) {
-				System.out.println("________________________________________");
-				System.out.println("Something went wrong: " + e.getMessage());
-				System.out.println("________________________________________");
+				ui.showError("Something went wrong: " + e.getMessage());
 			}
 		}
 
-		System.out.println("________________________________________");
-		System.out.println("Bye. Hope to see you again soon!");
-		System.out.println("________________________________________");
-
-		scanner.close();
+		this.ui.showEnd();
+		this.ui.close();
 	}
 
-	private static void saveToStorage() {
+	private void saveToStorage() {
 		try {
-			fileStorage.save(storage);
+			storage.save(taskList.getAllTasks());
 		} catch (Exception e) {
-			System.out.println("Something went wrong: " + e.getMessage());
+			this.ui.showError("Something went wrong: " + e.getMessage());
 		}
 	}
 
-	public static void list(String input) {
-		System.out.println("________________________________________");
-		System.out.println("	Here are the tasks in your list:");
-		for (int i = 0; i < storage.size(); i++) {
-			System.out.println("	" + (i + 1) + ". " + storage.get(i).toString());
-		}
-		System.out.println("________________________________________");
+	public void list(String input) {
+		ui.showList(taskList);
 	}
 
-	public static void markTask(String input, Boolean mark) {
+	public void markTask(String input, Boolean mark) throws JasonException {
 		int cut = 0;
 		if (mark) {
 			cut = 5;
@@ -98,149 +90,49 @@ public class Jason {
 			cut = 7;
 		}
 
-		try {
-			String stringNumber = input.substring(cut);
+		int taskIndex = Parser.parseIndex(input, cut) - 1;
 
-			//never give number
-			if (stringNumber.trim().isEmpty()) {
-				throw new JasonException("Please specify task number");
-			}
-			int number = Integer.parseInt(stringNumber) - 1;
+		taskList.markTask(taskIndex, mark);
+		Task temp = taskList.getTask(taskIndex);
+		ui.showMarked(temp, mark);
+		saveToStorage();
 
-			//number given is not in the list
-			if (number >= storage.size() || number < 0) {
-				throw new JasonException("Give me a valid task number");
-			}
-
-			if (mark) {
-				storage.get(number).markDone();
-
-			} else {
-				storage.get(number).markNotDone();
-			}
-			System.out.println("________________________________________");
-			String message = mark ? "	Nice! I've marked this task as done:"
-					: "	OK, I've marked this task as not done yet:";
-			System.out.println(message);
-			System.out.println("		" + storage.get(number).toString());
-			System.out.println("________________________________________");
-
-			saveToStorage();
-		} catch (JasonException e) {
-			System.out.println("________________________________________");
-			System.out.println("	Bro! " + e.getMessage());
-			System.out.println("________________________________________");
-		}
 	}
 
-	public static void todoAction(String input) throws JasonException{
-		//check if todo is empty
-		if (input.length() < 4) {
-			throw new JasonException("Todo cannot be empty!");
-		}
+	public void todoAction(String input) throws JasonException{
 
-		String contents = input.substring(5);
-		Todo temp = new Todo(contents);
-		storage.add(temp);
-
-		System.out.println("________________________________________");
-		System.out.println("Got it. I've added this task:");
-		System.out.println("   " + temp.toString());
-		System.out.println("Now you have " + storage.size() + " tasks in the list.");
-		System.out.println("________________________________________");
-
+		Todo todo = Parser.parseTodo(input);
+		taskList.add(todo);
+		ui.showAddTask(todo, taskList.size());
 		saveToStorage();
 
 
 	}
 
-	public static void deadlineAction(String input) throws JasonException{
-		//check if deadline is empty
-		if (input.length() < 8) {
-			throw new JasonException("deadline cannot be empty!");
-		}
+	public void deadlineAction(String input) throws JasonException{
 
-		// check if user included by
-		if (!input.contains("/by")) {
-			throw new JasonException("Give me a deadline! Include /by");
-		}
-
-		String[] array =  input.substring(9).split(" /by ");
-		String contents = array[0];
-		String deadline = array[1];
-
-		// empty contents and deadline
-		if (contents.trim().isEmpty() || deadline.trim().isEmpty()) {
-			throw new JasonException("Give me something in your task and deadline");
-		}
-
-		Deadline temp = new Deadline(contents, deadline);
-		storage.add(temp);
-
-		System.out.println("________________________________________");
-		System.out.println("Got it. I've added this task:");
-		System.out.println("   " + temp.toString());
-		System.out.println("Now you have " + storage.size() + " tasks in the list.");
-		System.out.println("________________________________________");
+		Deadline deadline = Parser.parseDeadline(input);
+		taskList.add(deadline);
+		ui.showAddTask(deadline, taskList.size());
 
 		saveToStorage();
 	}
 
-	public static void eventAction(String input) throws JasonException{
-		// check if event is empty
-		if (input.length() < 5) {
-			throw new JasonException("Event cannot be empty!");
-		}
+	public void eventAction(String input) throws JasonException{
 
-		if (!input.contains("/to") || !input.contains("/from")) {
-			throw new JasonException("Give me a duration! Include /from and /to");
-		}
-
-		String[] array =  input.substring(6).split(" /from ");
-		String contents = array[0];
-		String time = array[1];
-
-		String[] array1 = time.split(" /to ");
-		String from = array1[0];
-		String to = array1[1];
-
-		if (contents.trim().isEmpty() || from.trim().isEmpty() || to.trim().isEmpty()) {
-			throw new JasonException("give me something in your task, from and to!");
-		}
-
-		Event temp = new Event(contents, from, to);
-		storage.add(temp);
-
-		System.out.println("________________________________________");
-		System.out.println("Got it. I've added this task:");
-		System.out.println("   " +  temp.toString());
-		System.out.println("Now you have " + storage.size() + " tasks in the list.");
-		System.out.println("________________________________________");
+		Event event = Parser.parseEvent(input);
+		taskList.add(event);
+		ui.showAddTask(event, taskList.size());
 
 		saveToStorage();
 	}
 
-	public static void deleteAction(String input) throws JasonException{
-		String stringDelete = input.substring(6);
+	public void deleteAction(String input) throws JasonException{
+		int taskIndex = Parser.parseIndex(input, 6) - 1;
 
-		//user needs to state number
-		if (stringDelete.trim().isEmpty()) {
-			throw new JasonException("Please specify task number");
-		}
 
-		int delete = Integer.parseInt(stringDelete.trim()) - 1;
-
-		if (delete >= storage.size() || delete < 0) {
-			throw new JasonException("Give me a valid task number");
-		}
-
-		System.out.println("________________________________________");
-		System.out.println("Noted. I've removed this task:");
-		System.out.println("    " + storage.get(delete).toString());
-		System.out.println("Now you have " + (storage.size() - 1) + " tasks in the list.");
-		System.out.println("________________________________________");
-
-		storage.remove(delete);
+		Task delete = taskList.delete(taskIndex);
+		ui.showDeleteTask(delete, taskList.size());
 
 		saveToStorage();
 
