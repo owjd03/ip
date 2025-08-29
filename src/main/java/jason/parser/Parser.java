@@ -82,4 +82,18 @@ public class Parser {
         }
     }
 
+    public static String parseString(String input) throws JasonException {
+        if (input.length() < 5) {
+            throw new JasonException("Specify a keyword to search for!");
+        }
+
+        String keyword = input.substring(5).trim();
+
+        if (keyword.isEmpty()) {
+            throw new JasonException("Specify a keyword to search for!");
+        }
+
+        return keyword;
+    }
+
 }

@@ -47,4 +47,16 @@ public class TaskList {
             task.markNotDone();
         }
     }
+
+    public ArrayList<Task> findTask(String keyword) {
+        ArrayList<Task> matchingWords = new ArrayList<>();
+
+        for (Task task : this.tasks) {
+            if (task.getContents().toLowerCase().contains(keyword.toLowerCase())) {
+                matchingWords.add(task);
+            }
+        }
+
+        return matchingWords;
+    }
 }

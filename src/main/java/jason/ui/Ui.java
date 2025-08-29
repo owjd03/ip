@@ -1,5 +1,6 @@
 package jason.ui;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import jason.task.TaskList;
 import jason.task.Task;
@@ -131,5 +132,21 @@ public class Ui {
         showLine();
     }
 
-
+    /**
+     * Displays a message showing the various tasks with the keyword
+     *
+     * @param tasks The list of tasks that contain an identical word to the keyword
+     */
+    public void showFindTask(ArrayList<Task> tasks) {
+        showLine();
+        if (tasks.isEmpty()) {
+            System.out.println("    No matching tasks!");
+        } else {
+            System.out.println("    Here are the matching tasks in your list:");
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println("    " + (i + 1) + "." + tasks.get(i).toString());
+            }
+        }
+        showLine();
+    }
 }
