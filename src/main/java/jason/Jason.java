@@ -6,6 +6,8 @@ import jason.ui.Ui;
 import jason.storage.Storage;
 import jason.parser.Parser;
 
+import java.util.ArrayList;
+
 
 public class Jason {
 	private TaskList taskList;
@@ -79,6 +81,9 @@ public class Jason {
 
 				} else if (input.startsWith("delete")) {
 					deleteAction(input);
+
+				} else if (input.startsWith("find")) {
+					findAction(input);
 
 				} else {
 					// invalid structure
@@ -205,6 +210,17 @@ public class Jason {
 		ui.showDeleteTask(delete, taskList.size());
 
 		saveToStorage();
+	}
 
+	/**
+	 * Parses the input, find it from the task list, show results
+	 *
+	 * @param input The user input string containing the keyword to find
+	 * @throws JasonException If task is not given
+	 */
+	public void findAction(String input) throws JasonException{
+		String keyword = Parser.parseString(input);
+		ArrayList<Task> tasks = taskList.findTask(keyword);
+		ui.showFindTask(tasks);
 	}
 }
