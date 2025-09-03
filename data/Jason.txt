@@ -1,1 +1,2 @@
-T | 0 | shit
+T | 1 | eat
+D | 0 | eat shit | 28 jun 2003
