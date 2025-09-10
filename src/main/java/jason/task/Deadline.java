@@ -16,6 +16,9 @@ public class Deadline extends Task {
      */
     public Deadline(String contents, String deadline) {
         super(contents);
+
+        assert deadline != null : "Deadline cannot be null";
+
         try {
             LocalDate parsedDate = LocalDate.parse(deadline.trim());
             this.deadline = parsedDate.format(DateTimeFormatter.ofPattern("MMM d yyyy"));

@@ -9,6 +9,8 @@ public class Parser {
     private Parser() {}
 
     public static Todo parseTodo(String input) throws JasonException {
+        assert input != null : "input cannot be null";
+
         //check if todo is empty
         if (input.length() < 4) {
             throw new JasonException("Todo cannot be empty!");
@@ -19,6 +21,8 @@ public class Parser {
     }
 
     public static Deadline parseDeadline(String input) throws JasonException {
+        assert input != null : "input cannot be null";
+
         //check if deadline is empty
         if (input.length() < 8) {
             throw new JasonException("deadline cannot be empty!");
@@ -43,6 +47,8 @@ public class Parser {
     }
 
     public static Event parseEvent(String input) throws JasonException {
+        assert input != null : "input cannot be null";
+
         // check if event is empty
         if (input.length() < 5) {
             throw new JasonException("Event cannot be empty!");
@@ -68,6 +74,8 @@ public class Parser {
     }
 
     public static int parseIndex(String input, int index) throws JasonException {
+        assert input != null : "input cannot be null";
+
         String string = input.substring(index);
 
         //user needs to state number
@@ -83,6 +91,8 @@ public class Parser {
     }
 
     public static String parseString(String input) throws JasonException {
+        assert input != null : "input cannot be null";
+
         if (input.length() < 5) {
             throw new JasonException("Specify a keyword to search for!");
         }

@@ -40,6 +40,8 @@ public class TaskList {
     }
 
     public void markTask(int index, boolean isDone) throws JasonException {
+        assert index >= 0 : "Index cannot be less than 0";
+
         Task task = this.tasks.get(index); // This will throw exception if invalid index
         if (isDone) {
             task.markDone();
@@ -49,6 +51,8 @@ public class TaskList {
     }
 
     public ArrayList<Task> findTask(String keyword) {
+        assert keyword != null : "Keyword cannot be null";
+
         ArrayList<Task> matchingWords = new ArrayList<>();
 
         for (Task task : this.tasks) {
