@@ -15,6 +15,9 @@ public class Ui {
      *
      */
     public Ui(String name) {
+
+        assert name != null: "name cannot be null";
+
         this.name = name;
     }
 
@@ -45,6 +48,8 @@ public class Ui {
      * @return Returns the string input for the showList
      */
     public String showList(TaskList tasks) {
+        assert tasks != null : "Tasks cannot be null";
+
         StringBuilder showListString = new StringBuilder("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
             showListString.append("\n")
@@ -63,6 +68,8 @@ public class Ui {
      * @return Returns the string input for the showMarked.
      */
     public String showMarked(Task task, boolean mark) {
+        assert task != null : "Task cannot be null";
+
         String message = mark ? "	Nice! I've marked this task as done:"
                 : "	OK, I've marked this task as not done yet:";
         return message + "\n" + task.toString();
@@ -76,6 +83,8 @@ public class Ui {
      * @return Returns the string input for the showAddTask
      */
     public String showAddTask(Task task, int totalTasks) {
+        assert task != null : "Task cannot be null";
+
         return String.format("Got it. I've added this task:\n  %s\nNow you have %d tasks in the list.",
                 task.toString(), totalTasks);
     }
@@ -88,6 +97,8 @@ public class Ui {
      * @return Returns the string input for the showDeleteTask
      */
     public String showDeleteTask(Task task, int totalTasks) {
+        assert task != null : "Task cannot be null";
+
         return String.format("Got it. I've removed this task:\n  %s\nNow you have %d tasks in the list.",
                 task.toString(), totalTasks);
     }
@@ -99,6 +110,8 @@ public class Ui {
      * @return Returns the string input for the showFindTask
      */
     public String showFindTask(ArrayList<Task> tasks) {
+        assert tasks != null : "Tasks cannot be null";
+
         StringBuilder showFindTaskString = new StringBuilder();
         if (tasks.isEmpty()) {
             showFindTaskString.append("No matching tasks!");

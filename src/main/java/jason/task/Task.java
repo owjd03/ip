@@ -11,6 +11,8 @@ public class Task {
      * @param contents The contents of the task
      */
     public Task(String contents) {
+        assert contents != null : "Contents cannot be null";
+
         this.contents = contents;
         this.done = false;
     }

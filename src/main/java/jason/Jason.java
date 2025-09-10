@@ -34,9 +34,22 @@ public class Jason {
 			System.out.println("Something went wrong: " + e.getMessage());
 			this.taskList = new TaskList();
 		}
+
+		assert this.ui != null && this.storage != null && this.taskList != null
+				: "Jason failed to initialise";
 	}
 
+	/**
+	 * Processes user input and returns the appropriate response.
+	 * This method handles all user commands calling helper functions
+	 * according to the users response to invoke the action
+	 *
+	 * @param input The user's input string
+	 * @return A string response to display to the user
+	 */
 	public String getResponse(String input) {
+		assert input != null : "input cannot be null";
+
 		try {
 			if (isFirstIteration) {
 				return handleFirstIteration();
@@ -119,6 +132,8 @@ public class Jason {
 	public String markTask(String input, Boolean mark) throws JasonException {
 		int cut = mark ? MARK_COMMAND_LENGTH : UNMARK_COMMAND_LENGTH;
 
+		assert input != null && mark != null : "markTask parameters cannot be null";
+
 		int taskIndex = Parser.parseIndex(input, cut) - 1;
 
 		taskList.markTask(taskIndex, mark);
@@ -137,6 +152,7 @@ public class Jason {
 	 * @throws JasonException If Todo format is invalid or parsing fails.
 	 */
 	public String todoAction(String input) throws JasonException{
+		assert input != null : "todoAction parameters cannot be null";
 
 		Todo todo = Parser.parseTodo(input);
 		taskList.add(todo);
@@ -154,6 +170,7 @@ public class Jason {
 	 * @throws JasonException If Todo format is invalid or parsing fails.
 	 */
 	public String deadlineAction(String input) throws JasonException{
+		assert input != null : "deadlineAction parameters cannot be null";
 
 		Deadline deadline = Parser.parseDeadline(input);
 		taskList.add(deadline);
@@ -171,6 +188,7 @@ public class Jason {
 	 * @throws JasonException If Event format is invalid or parsing fails.
 	 */
 	public String eventAction(String input) throws JasonException{
+		assert input != null : "eventAction parameters cannot be null";
 
 		Event event = Parser.parseEvent(input);
 		taskList.add(event);
@@ -187,9 +205,9 @@ public class Jason {
 	 * @throws JasonException If task index is invalid or parsing fails.
 	 */
 	public String deleteAction(String input) throws JasonException{
+		assert input != null: "deleteAction parameters cannot be null";
+
 		int taskIndex = Parser.parseIndex(input, 6) - 1;
-
-
 		Task delete = taskList.delete(taskIndex);
 		saveToStorage();
 		return ui.showDeleteTask(delete, taskList.size());
@@ -205,6 +223,8 @@ public class Jason {
 	 * @throws JasonException If task is not given
 	 */
 	public String findAction(String input) throws JasonException{
+		assert input != null: "findAction parameters cannot be null";
+
 		String keyword = Parser.parseString(input);
 		ArrayList<Task> tasks = taskList.findTask(keyword);
 		return ui.showFindTask(tasks);
