@@ -17,6 +17,10 @@ public class Event extends Task {
      */
     public Event(String contents, String from, String to) {
         super(contents);
+
+        assert from != null : "From cannot be null";
+        assert to != null : "To cannot be null";
+
         this.from = parseDate(from);
         this.to = parseDate(to);
     }

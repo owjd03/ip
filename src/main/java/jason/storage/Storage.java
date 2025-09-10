@@ -41,6 +41,8 @@ public class Storage {
     }
 
     public Task checkTask(String line) {
+        assert line != null : "line cannot be null";
+
         String[] stringArray = line.split(" \\| ");
 
         if (stringArray.length < 3) {
@@ -50,6 +52,9 @@ public class Storage {
         String type = stringArray[0];
         Boolean isDone = stringArray[1].equals("1");
         String description = stringArray[2];
+
+        assert type != null : "type cannot be null";
+        assert description!= null : "description cannot be null";
 
         Task task;
 
@@ -75,6 +80,8 @@ public class Storage {
     }
 
     public void save(ArrayList<Task> tasks) {
+        assert tasks != null : "tasks cannot be null";
+
         try {
             File file = new File(filePath);
             file.getParentFile().mkdirs();
@@ -91,6 +98,8 @@ public class Storage {
     }
 
     public String formatTask(Task task) {
+        assert task != null : "task cannot be null";
+
         String isDone = task.getDone().equals("[ ]") ? "0" : "1";
         String description = task.getContents();
 
