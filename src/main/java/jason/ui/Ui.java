@@ -127,4 +127,12 @@ public class Ui {
         return showFindTaskString.toString();
     }
 
+    public String showSnooze(Task task, String snoozeUntil) {
+        assert task != null : "Task cannot be null";
+        assert snoozeUntil != null : "Snooze date cannot be null";
+
+        return String.format("Got it. I've snoozed this task until %s:\n  %s",
+                snoozeUntil, task.toString());
+    }
+
 }

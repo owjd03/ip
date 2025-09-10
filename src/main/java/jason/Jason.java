@@ -5,7 +5,6 @@ import jason.task.*;
 import jason.ui.Ui;
 import jason.storage.Storage;
 import jason.parser.Parser;
-
 import java.util.ArrayList;
 
 
@@ -80,6 +79,9 @@ public class Jason {
 
 			} else if (input.startsWith("find")) {
 				return findAction(input);
+
+			} else if (input.startsWith("snooze")) {
+				return snoozeAction(input);
 
 			} else {
 				// invalid structure
@@ -232,5 +234,18 @@ public class Jason {
 
 	public String exitJason() {
 		return ui.showEnd();
+	}
+
+	public String snoozeAction(String input) throws JasonException {
+		assert input != null: "snoozeAction parameters cannot be null";
+
+		int taskIndex = Parser.parseIndex(input, 7) - 1;
+		String snoozeUntil = Parser.parseSnoozeDate(input);
+
+		Task task = taskList.getTask(taskIndex);
+		task.snooze(snoozeUntil);
+		saveToStorage();
+
+		return ui.showSnooze(task, snoozeUntil);
 	}
 }
