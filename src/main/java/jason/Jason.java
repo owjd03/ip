@@ -14,6 +14,10 @@ public class Jason {
 	private Storage storage;
 	private Ui ui;
 	private static boolean isFirstIteration = true;
+	private static final int MARK_COMMAND_LENGTH = 5;
+	private static final int UNMARK_COMMAND_LENGTH = 7;
+	private static final int DELETE_COMMAND_LENGTH = 6;
+	private static final String DATA_FILE_PATH = "./data/Jason.txt";
 
 	/**
 	 * Construct a new Jason instance.
@@ -23,7 +27,7 @@ public class Jason {
 	 */
 	public Jason() {
 		this.ui = new Ui("Jason");
-		this.storage = new Storage("./data/Jason.txt");
+		this.storage = new Storage(DATA_FILE_PATH);
 		try {
 			this.taskList = new TaskList(storage.load());
 		} catch (Exception e) {
@@ -48,8 +52,7 @@ public class Jason {
 
 		try {
 			if (isFirstIteration) {
-				isFirstIteration = false;
-				return ui.showStart();
+				return handleFirstIteration();
 
 			} else if (input.equals("bye")) {
 				return exitJason();
@@ -89,6 +92,11 @@ public class Jason {
 		}
 	}
 
+	private String handleFirstIteration() {
+		isFirstIteration = false;
+		return ui.showStart();
+	}
+
 	/**
 	 * Saves tasks into hard drive storage.
 	 *
@@ -122,14 +130,9 @@ public class Jason {
 	 * @throws JasonException If the task index is invalid or parsing fails.
 	 */
 	public String markTask(String input, Boolean mark) throws JasonException {
-		assert input != null && mark != null : "markTask parameters cannot be null";
+		int cut = mark ? MARK_COMMAND_LENGTH : UNMARK_COMMAND_LENGTH;
 
-		int cut = 0;
-		if (mark) {
-			cut = 5;
-		} else {
-			cut = 7;
-		}
+		assert input != null && mark != null : "markTask parameters cannot be null";
 
 		int taskIndex = Parser.parseIndex(input, cut) - 1;
 
