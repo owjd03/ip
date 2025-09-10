@@ -4,6 +4,8 @@ import jason.exception.JasonException;
 import jason.task.Todo;
 import jason.task.Deadline;
 import jason.task.Event;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Parser {
     private Parser() {}
@@ -76,15 +78,15 @@ public class Parser {
     public static int parseIndex(String input, int index) throws JasonException {
         assert input != null : "input cannot be null";
 
-        String string = input.substring(index);
+        String[] stringArray = input.split(" ");
 
         //user needs to state number
-        if (string.trim().isEmpty()) {
+        if (stringArray.length < 2) {
             throw new JasonException("Please specify task number");
         }
 
         try {
-            return Integer.parseInt(string.trim());
+            return Integer.parseInt(stringArray[1]);
         } catch (NumberFormatException e) {
             throw new JasonException("Give me a valid task number");
         }
@@ -106,4 +108,36 @@ public class Parser {
         return keyword;
     }
 
+    public static String parseSnoozeDate(String input) throws JasonException {
+        assert input != null : "input cannot be null";
+
+        String[] stringArray = input.split(" ");
+
+        if (stringArray.length < 3) {
+            throw new JasonException("Please specify snooze date");
+        }
+
+        try {
+            return parseDate(stringArray[2]);
+        } catch (NumberFormatException e) {
+            throw new JasonException("Give me a valid dater");
+        }
+    }
+
+    public static String parseDate(String date) throws JasonException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d yyyy");
+
+        if (date.equals("tomorrow")) {
+            return LocalDate.now().plusDays(1).format(formatter);
+        } else if (date.equals("today")) {
+            return LocalDate.now().format(formatter);
+        } else {
+            try {
+                LocalDate dateFormat = LocalDate.parse(date);
+                return dateFormat.format(formatter);
+            } catch (Exception e) {
+                throw new JasonException("Invalid date format");
+            }
+        }
+    }
 }

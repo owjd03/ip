@@ -60,13 +60,25 @@ public class Storage {
 
         if (type.equals("T")) {
             task = new Todo(description);
+
+            if (stringArray.length > 3 && !stringArray[3].equals("null")) {
+                task.snooze(stringArray[3]);
+            }
         } else if (type.equals("D")) {
             task = new Deadline(description, stringArray[3]);
+
+            if (stringArray.length > 4 && !stringArray[4].equals("null")) {
+                task.snooze(stringArray[4]);
+            }
         } else if (type.equals("E")) {
             String[] timeRange = stringArray[3].split("-");
             String from = timeRange[0];
             String to = timeRange[1];
             task = new Event(description, from, to);
+
+            if (stringArray.length > 4 && !stringArray[4].equals("null")) {
+                task.snooze(stringArray[4]);
+            }
         } else {
             return null;
         }
@@ -102,15 +114,16 @@ public class Storage {
 
         String isDone = task.getDone().equals("[ ]") ? "0" : "1";
         String description = task.getContents();
+        String snoozeInfo = task.getSnoozeUntil() != null ? task.getSnoozeUntil() : "null";
 
         if (task instanceof Todo) {
-            return "T | " + isDone + " | " + description;
+            return "T | " + isDone + " | " + description + " | " + snoozeInfo;
         } else if (task instanceof Deadline) {
             Deadline deadline = (Deadline) task;
-            return "D | " + isDone + " | " + description + " | " + deadline.getDeadline();
+            return "D | " + isDone + " | " + description + " | " + deadline.getDeadline() + " | " + snoozeInfo;
         } else if (task instanceof Event) {
             Event event = (Event) task;
-            return "E | " + isDone + " | " + description + " | " + event.getFrom() + "-" + event.getTo();
+            return "E | " + isDone + " | " + description + " | " + event.getFrom() + "-" + event.getTo() + " | " + snoozeInfo;
         } else {
             return " ";
         }

@@ -1,8 +1,14 @@
 package jason.task;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 // Task class to handle tasks
 public class Task {
     private String contents;
     private boolean done;
+    private boolean snoozed;
+    private String snoozeDate;
 
     /**
      * Constructs a new Task with the specified contents.
@@ -15,6 +21,8 @@ public class Task {
 
         this.contents = contents;
         this.done = false;
+        this.snoozed = false;
+        this.snoozeDate = null;
     }
 
     /**
@@ -51,9 +59,34 @@ public class Task {
         return this.done ? "[X]" : "[ ]";
     }
 
+    public void snooze(String date) {
+        this.snoozed = true;
+        this.snoozeDate = date;
+    }
+
+    public void unSnooze() {
+        this.snoozed = false;
+        this.snoozeDate = null;
+    }
+
+    public boolean isSnoozed() {
+        return snoozed;
+    }
+
+    public String getSnoozeUntil() {
+        return snoozeDate;
+    }
+
+    public String getSnoozeStatus() {
+        if (isSnoozed()) {
+            return " (snoozed until " + snoozeDate + ")";
+        }
+        return "";
+    }
+
     @Override
     public String toString() {
-        return getDone() + " " + contents;
+        return getDone() + " " + contents + getSnoozeStatus();
     }
 
 }
