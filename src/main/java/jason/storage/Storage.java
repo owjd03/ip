@@ -13,10 +13,24 @@ import jason.task.Event;
 public class Storage {
     private String filePath;
 
+    /**
+     * Constructs a new Storage instance with the specified file path.
+     * Initializes the storage handler to work with the given file location.
+     *
+     * @param filePath The path to the file where tasks will be stored
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads tasks from the storage file and returns them as an ArrayList.
+     * Creates an empty list if the file doesn't exist. Parses each line
+     * of the file to reconstruct task objects with their saved state.
+     *
+     * @return ArrayList of Task objects loaded from the storage file
+     * @throws Exception If there are issues reading from the file
+     */
     public ArrayList<Task> load() throws Exception{
         ArrayList<Task> tempList =  new ArrayList<>();
         File file = new File(filePath);
@@ -40,6 +54,14 @@ public class Storage {
         return tempList;
     }
 
+    /**
+     * Parses a single line from the storage file and reconstructs the corresponding Task object.
+     * Handles different task types (Todo, Deadline, Event) and restores their completion
+     * status and snooze information. Uses pipe-delimited format for data extraction.
+     *
+     * @param line A single line from the storage file containing task data
+     * @return The reconstructed Task object, or null if the line format is invalid
+     */
     public Task checkTask(String line) {
         assert line != null : "line cannot be null";
 
@@ -91,6 +113,13 @@ public class Storage {
 
     }
 
+    /**
+     * Saves the list of tasks to the storage file.
+     * Creates the parent directory if it doesn't exist. Overwrites the entire
+     * file with the current task list using the pipe-delimited format.
+     *
+     * @param tasks ArrayList of Task objects to save to storage
+     */
     public void save(ArrayList<Task> tasks) {
         assert tasks != null : "tasks cannot be null";
 
@@ -109,6 +138,15 @@ public class Storage {
         }
     }
 
+    /**
+     * Formats a Task object into a pipe-delimited string for storage.
+     * Converts task data into a standardized format that can be saved to file
+     * and later parsed back into task objects. Handles different task types
+     * and includes completion status and snooze information.
+     *
+     * @param task The Task object to format for storage
+     * @return A pipe-delimited string representation of the task
+     */
     public String formatTask(Task task) {
         assert task != null : "task cannot be null";
 
