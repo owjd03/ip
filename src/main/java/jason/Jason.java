@@ -232,10 +232,25 @@ public class Jason {
 		return ui.showFindTask(tasks);
 	}
 
+	/**
+	 * Handles the exit command to terminate the Jason application.
+	 * Displays a farewell message to the user through the UI.
+	 *
+	 * @return A farewell message string to display to the user
+	 */
 	public String exitJason() {
 		return ui.showEnd();
 	}
 
+	/**
+	 * Processes the snooze command to delay a task until a specified date.
+	 * Parses the task index and snooze date from user input, applies the snooze
+	 * to the specified task, saves changes to storage, and returns a confirmation message.
+	 *
+	 * @param input The user input string in format "snooze <taskNumber> <date>"
+	 * @return A confirmation message showing the snoozed task and date
+	 * @throws JasonException If the task index is invalid or date format is incorrect
+	 */
 	public String snoozeAction(String input) throws JasonException {
 		assert input != null: "snoozeAction parameters cannot be null";
 

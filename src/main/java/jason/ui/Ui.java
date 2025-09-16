@@ -68,11 +68,13 @@ public class Ui {
      * @return Returns the string input for the showMarked.
      */
     public String showMarked(Task task, boolean mark) {
-        assert task != null : "Task cannot be null";
-
         String message = mark ? "	Nice! I've marked this task as done:"
                 : "	OK, I've marked this task as not done yet:";
-        return message + "\n" + task.toString();
+        return new StringBuilder()
+                .append(message)
+                .append("\n")
+                .append(task.toString())
+                .toString();
     }
 
     /**
@@ -83,10 +85,13 @@ public class Ui {
      * @return Returns the string input for the showAddTask
      */
     public String showAddTask(Task task, int totalTasks) {
-        assert task != null : "Task cannot be null";
-
-        return String.format("Got it. I've added this task:\n  %s\nNow you have %d tasks in the list.",
-                task.toString(), totalTasks);
+        return new StringBuilder()
+                .append("Got it. I've added this task:\n  ")
+                .append(task.toString())
+                .append("\nNow you have ")
+                .append(totalTasks)
+                .append(" tasks in the list.")
+                .toString();
     }
 
     /**
@@ -97,10 +102,13 @@ public class Ui {
      * @return Returns the string input for the showDeleteTask
      */
     public String showDeleteTask(Task task, int totalTasks) {
-        assert task != null : "Task cannot be null";
-
-        return String.format("Got it. I've removed this task:\n  %s\nNow you have %d tasks in the list.",
-                task.toString(), totalTasks);
+        return new StringBuilder()
+                .append("Got it. I've removed this task:\n  ")
+                .append(task.toString())
+                .append("\nNow you have ")
+                .append(totalTasks)
+                .append(" tasks in the list.")
+                .toString();
     }
 
     /**
@@ -128,11 +136,12 @@ public class Ui {
     }
 
     public String showSnooze(Task task, String snoozeUntil) {
-        assert task != null : "Task cannot be null";
-        assert snoozeUntil != null : "Snooze date cannot be null";
-
-        return String.format("Got it. I've snoozed this task until %s:\n  %s",
-                snoozeUntil, task.toString());
+        return new StringBuilder()
+                .append("Got it. I've snoozed this task until ")
+                .append(snoozeUntil)
+                .append(":\n  ")
+                .append(task.toString())
+                .toString();
     }
 
 }
