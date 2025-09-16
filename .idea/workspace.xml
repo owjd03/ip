@@ -6,12 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b08700d9-3310-4877-b550-202aa6d7fda0" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/Jason.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/Jason.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jason/Jason.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jason/Jason.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jason/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jason/parser/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jason/storage/Storage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jason/storage/Storage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jason/task/TaskList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jason/task/TaskList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jason/ui/Ui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jason/ui/Ui.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +56,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "branch-A-AiAssisted",
+    "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
