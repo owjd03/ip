@@ -6,8 +6,8 @@ import java.time.format.DateTimeFormatter;
 // Task class to handle tasks
 public class Task {
     private String contents;
-    private boolean done;
-    private boolean snoozed;
+    private boolean isDone;
+    private boolean isSnoozed;
     private String snoozeDate;
 
     /**
@@ -20,15 +20,15 @@ public class Task {
         assert contents != null : "Contents cannot be null";
 
         this.contents = contents;
-        this.done = false;
-        this.snoozed = false;
+        this.isDone = false;
+        this.isSnoozed = false;
         this.snoozeDate = null;
     }
 
     /**
-     *Returns the contents of the task
+     * Returns a string representation of the task, including its content
      *
-     * @return The contents of the task
+     * @return A string containing the formatted details of this task.
      */
     public String getContents() {
         return this.contents;
@@ -39,7 +39,7 @@ public class Task {
      *
      */
     public void markDone() {
-        this.done = true;
+        this.isDone = true;
     }
 
     /**
@@ -47,7 +47,7 @@ public class Task {
      *
      */
     public void markNotDone() {
-        this.done = false;
+        this.isDone = false;
     }
 
     /**
@@ -56,21 +56,21 @@ public class Task {
      * @return "[X]" if not done, "[ ]" if done
      */
     public String getDone() {
-        return this.done ? "[X]" : "[ ]";
+        return this.isDone ? "[X]" : "[ ]";
     }
 
     public void snooze(String date) {
-        this.snoozed = true;
+        this.isSnoozed = true;
         this.snoozeDate = date;
     }
 
     public void unSnooze() {
-        this.snoozed = false;
+        this.isSnoozed = false;
         this.snoozeDate = null;
     }
 
     public boolean isSnoozed() {
-        return snoozed;
+        return isSnoozed;
     }
 
     public String getSnoozeUntil() {
