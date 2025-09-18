@@ -137,14 +137,13 @@ deadline <description> /by <date>
 
 ```
 deadline Submit assignment /by 2024-12-25
-deadline Pay bills /by Dec 15 2024
+deadline Pay bills /by 2024-12-15
 deadline Complete project /by 2024-01-30
 ```
 
 **Supported Date Formats:**
 
 - `YYYY-MM-DD` - ISO date format (e.g., 2024-12-25)
-- Any other text will be stored as-is (e.g., "next Friday")
 
 #### `event`
 
@@ -158,8 +157,8 @@ event <description> /from <start_date> /to <end_date>
 
 ```
 event Conference /from 2024-12-20 /to 2024-12-22
-event Vacation /from Mon 2pm /to Fri 5pm
-event Workshop /from tomorrow /to 2024-12-30
+event Vacation /from 2024-12-15 /to 2024-12-25
+event Workshop /from 2024-01-01 /to 2024-01-03
 ```
 
 ### Task Management Commands
@@ -270,6 +269,7 @@ snooze <task_number> <date>
 snooze 1 tomorrow
 snooze 3 2024-12-30
 snooze 2 today
+snooze 4 2024-01-15
 ```
 
 **Output:**
@@ -327,6 +327,9 @@ Tasks are stored in a pipe-delimited format:
 T | 0 | Buy groceries | null
 D | 1 | Submit report | Dec 25 2024 | null
 E | 0 | Conference | Dec 20 2024-Dec 22 2024 | null
+T | 0 | Call dentist | Dec 30 2024
+D | 1 | Pay bills | Dec 15 2024 | Jan 1 2025
+E | 0 | Workshop | Jan 1 2025-Jan 3 2025 | tomorrow
 ```
 
 ### Data Recovery

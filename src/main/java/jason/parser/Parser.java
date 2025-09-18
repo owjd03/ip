@@ -6,6 +6,7 @@ import jason.task.Deadline;
 import jason.task.Event;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Parser {
 
@@ -58,6 +59,10 @@ public class Parser {
         }
 
         String[] array =  input.substring(9).split(" /by ");
+        if (array.length < 2) {
+            throw new JasonException("Give me a deadline! Include /by");
+        }
+
         String contents = array[0];
         String deadline = array[1];
 
@@ -66,6 +71,7 @@ public class Parser {
             throw new JasonException("Give me something in your task and deadline");
         }
 
+        validateDateFormat(deadline.trim());
 
         return new Deadline(contents, deadline);
     }
@@ -92,16 +98,27 @@ public class Parser {
         }
 
         String[] array =  input.substring(6).split(" /from ");
+        if (array.length < 2) {
+            throw new JasonException("Give me a duration! Include /from and /to");
+        }
+
         String contents = array[0];
         String time = array[1];
 
         String[] array1 = time.split(" /to ");
+        if (array1.length < 2) {
+            throw new JasonException("Give me a duration! Include /from and /to");
+        }
+
         String from = array1[0];
         String to = array1[1];
 
         if (contents.trim().isEmpty() || from.trim().isEmpty() || to.trim().isEmpty()) {
             throw new JasonException("give me something in your task, from and to!");
         }
+
+        validateDateFormat(from.trim());
+        validateDateFormat(to.trim());
 
         return new Event(contents, from, to);
     }
@@ -173,11 +190,9 @@ public class Parser {
             throw new JasonException("Please specify snooze date");
         }
 
-        try {
-            return parseDate(stringArray[2]);
-        } catch (NumberFormatException e) {
-            throw new JasonException("Give me a valid dater");
-        }
+        String dateInput = stringArray[2].trim();
+
+        return parseDate(dateInput);
     }
 
     /**
@@ -203,6 +218,21 @@ public class Parser {
             } catch (Exception e) {
                 throw new JasonException("Invalid date format");
             }
+        }
+    }
+
+    /**
+     * Validates that a date string follows the yyyy-mm-dd format.
+     * Throws an exception if the format is invalid.
+     *
+     * @param date The date string to validate
+     * @throws JasonException If the date format is not yyyy-mm-dd
+     */
+    private static void validateDateFormat(String date) throws JasonException {
+        try {
+            LocalDate.parse(date.trim()); // This will throw exception if not yyyy-mm-dd format
+        } catch (DateTimeParseException e) {
+            throw new JasonException("Please enter date in yyyy-mm-dd format");
         }
     }
 }
